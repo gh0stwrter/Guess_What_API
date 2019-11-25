@@ -11,45 +11,52 @@ import (
 	"upper.io/db.v3"
 )
 
-type id bson.ObjectId
-
 type User struct {
-	ID       id     `bson:"_id,omitempty"`
-	Name     string `bson:"name"`
-	Password string `bson:"password"`
-	Score    int    `bson:"score"`
+	ID       bson.ObjectId `bson:"_id,omitempty"`
+	Name     string        `bson:"name"`
+	Password string        `bson:"password"`
+	Score    int           `bson:"score"`
 }
 
 type Claims struct {
-	IDUser id
-	Name   string
-	jwt.StandardClaims
+	IDUser             bson.ObjectId
+	Name               string
+	jwt.StandardClaims `json:"omitempty"`
 }
+
+var userCollection = orm.Collection("user")
 
 var user User
 var jwtKey = []byte("my_secret_key")
 var orm = model.DatabaseSession()
 
 func CreateUser(name string, password string) string {
-	userCollection := orm.Collection("user")
 
 	hash, _ := hashPassword(password)
+	fmt.Println(hash)
 	userCollection.Insert(User{
 		Name:     name,
 		Password: hash,
 	})
-
-	defer orm.Close()
+	
 	return "User Create successfully"
 }
 
 func Login(name string, password string) string {
-	userCollection := orm.Collection("user")
+	fmt.Println(name)
 	res := userCollection.Find(db.Cond{"name": name})
-	res.One(&user)
+	err := res.One(&user)
+
+	fmt.Println(user)
+	if err != nil {
+		return "Wrong Name"
+	}
 	match := CheckPasswordHash(password, user.Password)
+
+	fmt.Println(match)
+
 	if match == false {
-		CreateUser(name, password)
+		return "Wrong Password try again"
 	}
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
@@ -69,13 +76,20 @@ func Login(name string, password string) string {
 	return tokenString
 }
 
-func SetScore(score int, id string) string {
-	userCollection := orm.Collection("user")
+func SetScore(score int, id bson.ObjectId) string {
 	res := userCollection.Find(db.Cond{"_id": id})
-	res.One(&user)
+	fmt.Println(id)
+	err := res.One(&user)
+
+	if err != nil {
+		return "Error"
+	}
+
 	res.Update(User{
+
 		Score: score,
 	})
+
 	fmt.Println(user)
 
 	return "Score insert"

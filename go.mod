@@ -12,6 +12,7 @@ require (
 	github.com/golang/dep v0.5.4 // indirect
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/gorilla/mux v1.7.3
+	github.com/gorilla/sessions v1.2.0
 	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.11 // indirect
 	github.com/jmank88/nuts v0.4.0 // indirect
@@ -21,6 +22,7 @@ require (
 	github.com/oleiade/reflections v1.0.0 // indirect
 	github.com/pelletier/go-toml v1.6.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
+	github.com/rs/cors v1.7.0
 	github.com/sdboyer/constext v0.0.0-20170321163424-836a14457353 // indirect
 	golang.org/x/crypto v0.0.0-20191117063200-497ca9f6d64f
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
