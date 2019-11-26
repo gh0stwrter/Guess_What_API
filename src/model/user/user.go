@@ -38,7 +38,7 @@ func CreateUser(name string, password string) string {
 		Name:     name,
 		Password: hash,
 	})
-	
+
 	return "User Create successfully"
 }
 
@@ -51,8 +51,8 @@ func Login(name string, password string) string {
 	if err != nil {
 		return "Wrong Name"
 	}
-	match := CheckPasswordHash(password, user.Password)
 
+	match := CheckPasswordHash(password, user.Password)
 	fmt.Println(match)
 
 	if match == false {

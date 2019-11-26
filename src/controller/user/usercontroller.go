@@ -1,7 +1,6 @@
 package usercontroller
 
 import (
-	modelroom "app/src/model/room"
 	modeluser "app/src/model/user"
 	"encoding/json"
 	"fmt"
@@ -26,14 +25,6 @@ type User struct {
 }
 
 var user User
-
-type Room struct {
-	IDRoom bson.ObjectId `json:",omitempty"`
-	Admin  bson.ObjectId `json:",omitempty"`
-	Name   string        `json:",omitempty"`
-}
-
-var room Room
 
 func Secret(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-Auth")
@@ -96,19 +87,11 @@ func ScoreData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "Application/json")
 	json.NewDecoder(r.Body).Decode(&user)
 	fmt.Println(user)
-	res := modeluser.SetScore(user.Score, bson.ObjectIdHex("5dd718d8a54d75851db8f409"))
+	res := modeluser.SetScore(user.Score, bson.ObjectIdHex(user.IDUser.String()))
 	fmt.Println(res)
 	data := User{
 		Score: user.Score,
 	}
 	fmt.Println(data)
-	json.NewEncoder(w).Encode(data)
-}
-
-func CreateRoom(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "Application/json")
-	json.NewDecoder(r.Body).Decode(&room)
-	fmt.Println(modelroom.CreateRoom(room.Admin, room.Name))
-	data := Room{IDRoom: room.IDRoom}
 	json.NewEncoder(w).Encode(data)
 }

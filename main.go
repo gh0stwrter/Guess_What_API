@@ -1,8 +1,10 @@
 package main
 
 import (
+	roomcontroller "app/src/controller/room"
 	socketmanager "app/src/controller/socket"
 	usercontroller "app/src/controller/user"
+
 	"fmt"
 	"log"
 	"net/http"
@@ -41,10 +43,11 @@ func main() {
 	http.Handle("/", r)
 	r.HandleFunc("/ws", setupRoutes)
 	r.HandleFunc("/score", usercontroller.ScoreData)
-	r.HandleFunc("/create-game", usercontroller.CreateRoom)
 	r.HandleFunc("/sign-in", usercontroller.SignIn)
 	r.HandleFunc("/sign-up", usercontroller.SignUp)
 	r.HandleFunc("/logout", usercontroller.Logout)
+	r.HandleFunc("/rooms", roomcontroller.GetAllRoom)
+	r.HandleFunc("/create-game", roomcontroller.CreateRoom)
 
 	log.Println("http server started on :8000")
 	c := cors.AllowAll()

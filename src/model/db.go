@@ -5,10 +5,6 @@ import (
 	"upper.io/db.v3/mongo"
 )
 
-type Room struct {
-	Name string `bson:"name"`
-}
-
 var settings = mongo.ConnectionURL{
 	Database: `guess_whatdb`,
 	Host:     `127.0.0.1`,

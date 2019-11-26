@@ -11,12 +11,12 @@ require (
 	github.com/go-bongo/bongo v0.10.4 // indirect
 	github.com/golang/dep v0.5.4 // indirect
 	github.com/golang/protobuf v1.3.2 // indirect
+	github.com/googollee/go-socket.io v1.4.2
 	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/sessions v1.2.0
 	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.11 // indirect
 	github.com/jmank88/nuts v0.4.0 // indirect
-	github.com/kr/pretty v0.1.0 // indirect
 	github.com/maxwellhealth/go-dotaccess v0.0.0-20190924013105-74ea4f4ca4eb // indirect
 	github.com/nightlyone/lockfile v0.0.0-20180618180623-0ad87eef1443 // indirect
 	github.com/oleiade/reflections v1.0.0 // indirect
