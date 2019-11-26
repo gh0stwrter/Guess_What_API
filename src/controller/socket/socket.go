@@ -15,10 +15,8 @@ type Client struct {
 }
 
 type Message struct {
-	Type      int    `json:"type"`
-	Body      string `json:"body"`
-	Positionx string `json:"positionx"`
-	PositionY string `json:"positiony"`
+	Type int    `json:"type"`
+	Body string `json:"body"`
 }
 
 type Pool struct {
@@ -61,9 +59,6 @@ func (c *Client) Read() {
 		c.Pool.Broadcast <- message
 		fmt.Printf("Message Received: %+v\n", message)
 
-		positions := Message{Type: messageType, Positionx: string(p), PositionY: string(p)}
-		c.Pool.Broadcast <- positions
-		fmt.Printf("Message Received: %+v\n", positions)
 	}
 }
 

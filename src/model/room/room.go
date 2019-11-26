@@ -2,8 +2,7 @@ package modelroom
 
 import (
 	model "app/src/model"
-	modeluser "app/src/model/user"
-
+	"gopkg.in/mgo.v2/bson"
 )
 
 var orm = model.DatabaseSession()
@@ -12,12 +11,11 @@ var rooms []Room
 var roomCollection = orm.Collection("room")
 
 type Room struct {
-	Admin  string `bson:"_admin"`
-	Name   string `bson:"name"`
-	Enable bool   `bson:enable`
+	IDRoom bson.ObjectId `bson:"_id"`
+	Admin  string        `bson:"_admin"`
+	Name   string        `bson:"name"`
+	Enable bool          `bson:"enable"`
 }
-
-
 
 func CreateRoom(admin string, name string) string {
 
@@ -34,3 +32,4 @@ func FindAllRooms() []Room {
 	res.All(&rooms)
 	return rooms
 }
+

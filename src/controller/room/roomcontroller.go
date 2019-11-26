@@ -4,7 +4,6 @@ import (
 	modelroom "app/src/model/room"
 
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -20,9 +19,12 @@ type Room struct {
 	IDRoom  bson.ObjectId `json:",omitempty"`
 	AdminID string        `json:",omitempty"`
 	Name    string        `json:",omitempty"`
+	Data    []Room        `json:",omitempty"`
+	Message string        `json",omitempty"`
 }
 
 var room Room
+var rooms []Room
 
 func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "Application/json")
@@ -37,16 +39,10 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(data)
 }
 
-
 func GetAllRoom(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "Application/json")
-	session, _ := store.Get(r, "session-Auth")
-	isAuth := session.Values["authenticated"] == true
-	if isAuth {
-		roomsFind := modelroom.FindAllRooms()
-		fmt.Println(roomsFind)
-	}
-
-	fmt.Println(session)
+	
+	roomsFind := modelroom.FindAllRooms()
+	json.NewEncoder(w).Encode(&roomsFind)
 
 }
