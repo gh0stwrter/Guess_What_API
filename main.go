@@ -4,19 +4,15 @@ import (
 	roomcontroller "app/src/controller/room"
 	socketmanager "app/src/controller/socket"
 	usercontroller "app/src/controller/user"
-
 	"fmt"
+
+	"github.com/joncody/wsrooms"
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 
-	"github.com/rs/cors"
-
 	"github.com/gorilla/mux"
 )
-
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-}
 
 func serveWs(pool *socketmanager.Pool, w http.ResponseWriter, r *http.Request) {
 	conn, err := socketmanager.Upgrade(w, r)
@@ -40,6 +36,12 @@ func setupRoutes(w http.ResponseWriter, r *http.Request) {
 func main() {
 	// Create a simple file server
 	r := mux.NewRouter()
+	c := cors.AllowAll()
+
+	wsrooms.Emitter.On("hello", func(c *wsrooms.Conn, msg *wsrooms.Message) {
+		c.Emit(msg)
+		// c.Send <- msg.Bytes()
+	})
 	http.Handle("/", r)
 	r.HandleFunc("/ws", setupRoutes)
 	r.HandleFunc("/score", usercontroller.ScoreData)
@@ -50,7 +52,6 @@ func main() {
 	r.HandleFunc("/create-game", roomcontroller.CreateRoom)
 
 	log.Println("http server started on :8000")
-	c := cors.AllowAll()
 
 	handler := c.Handler(r)
 	err := http.ListenAndServe(":8000", handler)

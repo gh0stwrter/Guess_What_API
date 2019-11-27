@@ -9,7 +9,6 @@ import (
 )
 
 type Client struct {
-	ID   string
 	Conn *websocket.Conn
 	Pool *Pool
 }
