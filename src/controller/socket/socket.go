@@ -3,6 +3,7 @@ package socketmanager
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
+
 	"io"
 	"log"
 	"net/http"
@@ -46,9 +47,9 @@ func (pool *Pool) Start() {
 		select {
 		case client := <-pool.Register:
 			pool.Clients[client] = true
-			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
+			fmt.Println("Size of Connection Pool: ", client)
 			for client, _ := range pool.Clients {
-				fmt.Println(client)
+
 				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."})
 
 			}

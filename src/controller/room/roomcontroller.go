@@ -41,8 +41,9 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 
 func GetAllRoom(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "Application/json")
-	
+
 	roomsFind := modelroom.FindAllRooms()
 	json.NewEncoder(w).Encode(&roomsFind)
 
 }
+

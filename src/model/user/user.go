@@ -42,6 +42,8 @@ func CreateUser(name string, password string) string {
 	return "User Create successfully"
 }
 
+var users []User
+
 func Login(name string, password string) string {
 	fmt.Println(name)
 	res := userCollection.Find(db.Cond{"name": name})
@@ -75,16 +77,20 @@ func Login(name string, password string) string {
 
 	return tokenString
 }
+func FindAllUsers() []User {
+	res := userCollection.Find()
+	res.All(&users)
+	return users
+}
 
 func SetScore(score int, id bson.ObjectId) string {
 	res := userCollection.Find(db.Cond{"_id": id})
 	fmt.Println(id)
 	err := res.One(&user)
-
 	if err != nil {
 		return "Error"
 	}
-
+	fmt.Println(user.Score)
 	res.Update(User{
 
 		Score: score,

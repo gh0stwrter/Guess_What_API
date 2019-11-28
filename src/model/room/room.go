@@ -10,18 +10,20 @@ var room Room
 var rooms []Room
 var roomCollection = orm.Collection("room")
 
+type User struct {
+	Name string
+}
 type Room struct {
-	IDRoom bson.ObjectId `bson:"_id"`
-	Admin  string        `bson:"_admin"`
-	Name   string        `bson:"name"`
-	Enable bool          `bson:"enable"`
+	IDRoom  bson.ObjectId `bson:"_id"`
+	Admin   string        `bson:"_admin"`
+	Players []User        `bson:"players"`
+	Turn    string        `bson:"turn"`
 }
 
 func CreateRoom(admin string, name string) string {
 
 	roomCollection.Insert(Room{
 		Admin: admin,
-		Name:  name,
 	})
 
 	return "Room Create"
@@ -32,4 +34,3 @@ func FindAllRooms() []Room {
 	res.All(&rooms)
 	return rooms
 }
-

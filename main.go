@@ -39,6 +39,7 @@ func main() {
 	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(pool, w, r)
 	})
+	r.HandleFunc("/users", usercontroller.GetAllUsers)
 	r.HandleFunc("/score", usercontroller.ScoreData)
 	r.HandleFunc("/sign-in", usercontroller.SignIn)
 	r.HandleFunc("/sign-up", usercontroller.SignUp)

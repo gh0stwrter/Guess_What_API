@@ -9,6 +9,7 @@ require (
 	github.com/boltdb/bolt v1.3.1 // indirect
 	github.com/chuckpreslar/emission v0.0.0-20170206194824-a7ddd980baf9 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gdexlab/go-render v1.0.1
 	github.com/go-bongo/bongo v0.10.4 // indirect
 	github.com/golang/dep v0.5.4 // indirect
 	github.com/golang/protobuf v1.3.2 // indirect

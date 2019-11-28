@@ -82,12 +82,18 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 	session.Save(r, w)
 }
+func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "Application/json")
+	usersFind := modeluser.FindAllUsers()
+	json.NewEncoder(w).Encode(&usersFind)
+
+}
 
 func ScoreData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "Application/json")
 	json.NewDecoder(r.Body).Decode(&user)
 	fmt.Println(user)
-	res := modeluser.SetScore(user.Score, bson.ObjectIdHex(user.IDUser.String()))
+	res := modeluser.SetScore(user.Score, user.IDUser)
 	fmt.Println(res)
 	data := User{
 		Score: user.Score,
