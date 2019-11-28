@@ -45,7 +45,9 @@ func main() {
 	r.HandleFunc("/sign-up", usercontroller.SignUp)
 	r.HandleFunc("/logout", usercontroller.Logout)
 	r.HandleFunc("/rooms", roomcontroller.GetAllRoom)
+	r.HandleFunc("/joined", roomcontroller.JoinedUser)
 	r.HandleFunc("/create-game", roomcontroller.CreateRoom)
+
 
 	log.Println("http server started on :8000")
 

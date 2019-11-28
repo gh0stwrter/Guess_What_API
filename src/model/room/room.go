@@ -2,7 +2,10 @@ package modelroom
 
 import (
 	model "app/src/model"
+	"fmt"
 	"gopkg.in/mgo.v2/bson"
+
+	"upper.io/db.v3"
 )
 
 var orm = model.DatabaseSession()
@@ -10,23 +13,34 @@ var room Room
 var rooms []Room
 var roomCollection = orm.Collection("room")
 
-type User struct {
-	Name string
-}
 type Room struct {
-	IDRoom  bson.ObjectId `bson:"_id"`
-	Admin   string        `bson:"_admin"`
-	Players []User        `bson:"players"`
-	Turn    string        `bson:"turn"`
+	Admin   string   `bson:"_admin"`
+	Players []string `bson:"players"`
+	Name    string   `bson:"name"`
+	Turn    string   `bson:"turn"`
 }
 
-func CreateRoom(admin string, name string) string {
+func RoomCreate(admin string, name string) string {
 
-	roomCollection.Insert(Room{
+	fmt.Println(roomCollection.Insert(Room{
 		Admin: admin,
-	})
+		Name:  name,
+	}))
 
 	return "Room Create"
+}
+func UserJoined(name string, id string) {
+	data := bson.ObjectIdHex(id)
+	res := roomCollection.Find(db.Cond{"_id": data})
+	err := res.One(&room)
+	if err != nil {
+		fmt.Println(err)
+	}
+	player := []string{name}
+	players := append(player, name)
+	res.Update(Room{
+		Players: players,
+	})
 }
 
 func FindAllRooms() []Room {
