@@ -6,7 +6,7 @@ import (
 	usercontroller "app/src/controller/user"
 	"fmt"
 
-	"github.com/joncody/wsrooms"
+	"flag"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
@@ -27,23 +27,18 @@ func serveWs(pool *socketmanager.Pool, w http.ResponseWriter, r *http.Request) {
 	pool.Register <- client
 	client.Read()
 }
-func setupRoutes(w http.ResponseWriter, r *http.Request) {
-	pool := socketmanager.NewPool()
-	go pool.Start()
 
-	serveWs(pool, w, r)
-}
 func main() {
+	flag.Parse()
 	// Create a simple file server
 	r := mux.NewRouter()
 	c := cors.AllowAll()
-
-	wsrooms.Emitter.On("hello", func(c *wsrooms.Conn, msg *wsrooms.Message) {
-		c.Emit(msg)
-		// c.Send <- msg.Bytes()
-	})
+	pool := socketmanager.NewPool()
+	go pool.Start()
 	http.Handle("/", r)
-	r.HandleFunc("/ws", setupRoutes)
+	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(pool, w, r)
+	})
 	r.HandleFunc("/score", usercontroller.ScoreData)
 	r.HandleFunc("/sign-in", usercontroller.SignIn)
 	r.HandleFunc("/sign-up", usercontroller.SignUp)
